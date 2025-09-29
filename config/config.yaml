@@ -26,3 +26,98 @@ sources:
           default_lookback_days: 90
     rate_limit:
       req_per_min: 60
+
+  - key: greynoise
+    enabled: true
+    type: generic_rest
+    base_url: "https://api.greynoise.io"
+    auth_type: header
+    auth_env_key: API_KEY_GREYNOISE
+    endpoints:
+      - path: "/v3/community/{ip}"
+        params:
+          default_limit: 1
+          default_lookback_days: 7
+    rate_limit:
+      req_per_min: 30
+
+  - key: virustotal
+    enabled: true
+    type: generic_rest
+    base_url: "https://www.virustotal.com/api/v3"
+    auth_type: header
+    auth_env_key: API_KEY_VIRUSTOTAL
+    endpoints:
+      - path: "/ip_addresses/{ip}"
+        params:
+          default_limit: 1
+          default_lookback_days: 30
+    rate_limit:
+      req_per_min: 4
+
+  - key: otx
+    enabled: true
+    type: generic_rest
+    base_url: "https://otx.alienvault.com/api/v1"
+    auth_type: header
+    auth_env_key: API_KEY_OTX
+    endpoints:
+      - path: "/indicators/IPv4/{ip}/general"
+        params:
+          default_limit: 1
+          default_lookback_days: 30
+    rate_limit:
+      req_per_min: 60
+
+  - key: malwarebazaar
+    enabled: true
+    type: generic_rest
+    base_url: "https://mb-api.abuse.ch/api/v1"
+    auth_type: none
+    auth_env_key: ""
+    endpoints:
+      - path: "/"
+        params:
+          default_limit: 100
+          default_lookback_days: 7
+    rate_limit:
+      req_per_min: 60
+
+  - key: greynoise
+    enabled: true
+    type: generic_rest
+    base_url: "https://api.greynoise.io"
+    auth_type: header
+    auth_env_key: API_KEY_GREYNOISE
+    endpoints:
+      - path: "/v3/community/{ip}"
+        params:
+          default_limit: 1
+    rate_limit:
+      req_per_min: 30
+
+  - key: censys
+    enabled: true
+    type: generic_rest
+    base_url: "https://search.censys.io/api/v2"
+    auth_type: header
+    auth_env_key: CENSYS_API_TOKEN
+    endpoints:
+      - path: "/hosts/{ip}"
+        params:
+          default_limit: 1
+    rate_limit:
+      req_per_min: 60
+
+  - key: urlhaus
+    enabled: true
+    type: generic_rest
+    base_url: "https://urlhaus-api.abuse.ch"
+    auth_type: header
+    auth_env_key: URLHAUS_AUTH_KEY
+    endpoints:
+      - path: "/v1/url/"
+        params:
+          default_limit: 100
+    rate_limit:
+      req_per_min: 60
