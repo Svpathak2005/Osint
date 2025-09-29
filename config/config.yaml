@@ -1,0 +1,28 @@
+sources:
+  - key: shodan
+    enabled: true
+    type: shodan_rest
+    base_url: "https://api.shodan.io"
+    auth_type: query
+    auth_env_key: API_KEY_SHODAN
+    endpoints:
+      - path: "/shodan/host/{ip}"
+        params:
+          default_limit: 1
+          default_lookback_days: 7
+    rate_limit:
+      req_per_min: 60
+
+  - key: abuseipdb
+    enabled: true
+    type: generic_rest
+    base_url: "https://api.abuseipdb.com/api/v2"
+    auth_type: header
+    auth_env_key: API_KEY_ABUSEIPDB
+    endpoints:
+      - path: "/check"
+        params:
+          default_limit: 1
+          default_lookback_days: 90
+    rate_limit:
+      req_per_min: 60
