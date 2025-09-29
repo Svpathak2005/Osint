@@ -121,3 +121,49 @@ sources:
           default_limit: 100
     rate_limit:
       req_per_min: 60
+
+  - key: whoisxml
+    enabled: true
+    type: generic_rest
+    base_url: "https://whoisxmlapi.com/whoisserver"
+    auth_type: query
+    auth_env_key: API_KEY_WHOISXML
+    endpoints:
+      - path: "/WhoisService"
+        params:
+          outputFormat: JSON
+    rate_limit:
+      req_per_min: 60
+
+  - key: securitytrails
+    enabled: true
+    type: generic_rest
+    base_url: "https://api.securitytrails.com/v1"
+    auth_type: header
+    auth_env_key: API_KEY_SECURITYTRAILS
+    endpoints:
+      - path: "/domain/{domain}"
+    rate_limit:
+      req_per_min: 30
+
+  - key: zoomeye
+    enabled: true
+    type: generic_rest
+    base_url: "https://api.zoomeye.org"
+    auth_type: header
+    auth_env_key: API_KEY_ZOOMEYE
+    endpoints:
+      - path: "/host/search?query={ip}"
+    rate_limit:
+      req_per_min: 30
+
+  - key: ipinfo
+    enabled: true
+    type: generic_rest
+    base_url: "https://ipinfo.io"
+    auth_type: query
+    auth_env_key: API_KEY_IPINFO
+    endpoints:
+      - path: "/{ip}"
+    rate_limit:
+      req_per_min: 60
