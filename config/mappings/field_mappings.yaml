@@ -1,0 +1,195 @@
+# Field Mapping Configuration for OSINT Data Normalization
+# This file defines how raw API fields map to standardized normalized fields
+
+# Shodan API Field Mappings
+shodan:
+  indicator_field: "ip"
+  indicator_type: "ip_address"
+  
+  # Geolocation mappings
+  geolocation:
+    country: "country_name"
+    city: "city"
+    region: "region_code"
+    latitude: "latitude" 
+    longitude: "longitude"
+  
+  # Network mappings
+  network:
+    asn: "asn"
+    organization: "org"
+    isp: "isp"
+  
+  # Threat intelligence mappings
+  threat_intelligence:
+    vulns: "vulns"
+    tags: "tags"
+  
+  # Timestamps
+  timestamps:
+    last_update: "last_update"
+
+# VirusTotal API Field Mappings
+virustotal:
+  indicator_field: "id"
+  indicator_type_field: "type"
+  
+  # Reputation mappings
+  reputation:
+    score_field: "attributes.reputation"
+    harmless: "attributes.last_analysis_stats.harmless"
+    malicious: "attributes.last_analysis_stats.malicious"
+    suspicious: "attributes.last_analysis_stats.suspicious"
+    undetected: "attributes.last_analysis_stats.undetected"
+  
+  # Geolocation mappings
+  geolocation:
+    country: "attributes.country"
+  
+  # Network mappings
+  network:
+    asn: "attributes.asn"
+    organization: "attributes.as_owner"
+
+# AbuseIPDB API Field Mappings
+abuseipdb:
+  indicator_field: "ipAddress"
+  indicator_type: "ip_address"
+  
+  # Reputation mappings
+  reputation:
+    confidence_field: "abuseConfidencePercentage"
+    reports: "totalReports"
+    distinct_users: "numDistinctUsers"
+  
+  # Geolocation mappings
+  geolocation:
+    country: "countryCode"
+  
+  # Network mappings
+  network:
+    isp: "isp"
+    usage_type: "usageType"
+    domain: "domain"
+  
+  # Timestamps
+  timestamps:
+    last_reported: "lastReportedAt"
+
+# AlienVault OTX API Field Mappings
+otx:
+  indicator_field: "indicator"
+  indicator_type_field: "type"
+  
+  # Threat intelligence mappings
+  threat_intelligence:
+    pulses: "pulse_info.pulses"
+    pulse_count: "pulse_info.count"
+    malware_families: "pulse_info.pulses[].malware_families"
+    attack_ids: "pulse_info.pulses[].attack_ids"
+    tags: "pulse_info.pulses[].tags"
+  
+  # Validation
+  validation: "validation"
+
+# GreyNoise API Field Mappings
+greynoise:
+  indicator_field: "ip"
+  indicator_type: "ip_address"
+  
+  # Classification mappings
+  classification:
+    classification: "classification"
+    noise: "noise"
+    riot: "riot"
+  
+  # Geolocation mappings
+  geolocation:
+    country: "metadata.country"
+    city: "metadata.city"
+    organization: "metadata.organization"
+    asn: "metadata.asn"
+  
+  # Timestamps
+  timestamps:
+    first_seen: "first_seen"
+    last_seen: "last_seen"
+
+# Censys API Field Mappings
+censys:
+  indicator_field: "ip"
+  indicator_type: "ip_address"
+  
+  # Geolocation mappings
+  geolocation:
+    country: "location.country"
+    city: "location.city"
+    coordinates: "location.coordinates"
+  
+  # Network mappings
+  network:
+    asn: "autonomous_system.asn"
+    organization: "autonomous_system.organization"
+  
+  # Services
+  services: "services"
+
+# URLhaus API Field Mappings
+urlhaus:
+  indicator_field: "url"
+  indicator_type: "url"
+  
+  # Threat intelligence mappings
+  threat_intelligence:
+    threat: "threat"
+    malware: "payloads[].malware"
+    tags: "tags"
+  
+  # Timestamps
+  timestamps:
+    first_seen: "date_added"
+    last_seen: "last_online"
+
+# MalwareBazaar API Field Mappings
+malwarebazaar:
+  indicator_field: "sha256_hash"
+  indicator_type: "file_hash"
+  
+  # Threat intelligence mappings
+  threat_intelligence:
+    signature: "signature"
+    malware_family: "malware_family"
+    tags: "tags"
+  
+  # File information
+  file_info:
+    file_type: "file_type"
+    file_size: "file_size"
+    mime_type: "mime_type"
+  
+  # Timestamps
+  timestamps:
+    first_seen: "first_seen"
+
+# Threat Level Mapping
+threat_levels:
+  # Map source-specific values to standardized threat levels
+  malicious_keywords: ["malicious", "malware", "botnet", "c2", "phishing", "trojan", "ransomware"]
+  suspicious_keywords: ["suspicious", "scanning", "bruteforce", "spam", "proxy"]
+  benign_keywords: ["benign", "clean", "safe", "legitimate"]
+  
+  # Confidence thresholds
+  confidence_thresholds:
+    high: 0.8
+    medium: 0.5
+    low: 0.3
+
+# Geographic Region Mappings
+geographic_regions:
+  # Map country codes to regions
+  north_america: ["US", "CA", "MX"]
+  europe: ["GB", "DE", "FR", "IT", "ES", "NL", "SE", "NO", "DK", "FI"]
+  asia_pacific: ["CN", "JP", "KR", "IN", "AU", "SG", "HK", "TW"]
+  south_america: ["BR", "AR", "CL", "CO", "PE"]
+  africa: ["ZA", "NG", "EG", "KE", "MA"]
+  middle_east: ["AE", "SA", "IL", "TR", "IR"]

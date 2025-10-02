@@ -1,0 +1,26 @@
+{
+  "processing_stats": {
+    "total_raw_records": 0,
+    "total_normalized_records": 9,
+    "total_aggregated_records": 0,
+    "processing_start_time": "2025-10-02 16:48:32.743618",
+    "processing_end_time": null,
+    "errors": [],
+    "warnings": [],
+    "sources_processed": [
+      "abuseipdb",
+      "censys",
+      "greynoise",
+      "malwarebazaar",
+      "otx",
+      "shodan",
+      "urlhaus",
+      "virustotal"
+    ]
+  },
+  "threat_distribution": {},
+  "source_coverage": {},
+  "total_unique_indicators": 0,
+  "high_confidence_threats": 0,
+  "multi_source_indicators": 0
+}

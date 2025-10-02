@@ -1,0 +1,137 @@
+# Threat Intelligence Normalization Mappings
+# Maps source-specific threat indicators to standardized taxonomy
+
+# Malware Family Mappings
+malware_families:
+  # Normalize malware family names across sources
+  aliases:
+    # Banking Trojans
+    zeus: ["zeus", "zbot", "zloader"]
+    emotet: ["emotet", "geodo", "heodo"]
+    trickbot: ["trickbot", "trickloader"]
+    
+    # Ransomware
+    ransomware: ["ransomware", "crypto", "locker"]
+    wannacry: ["wannacry", "wcry", "wanna"]
+    ryuk: ["ryuk", "hermes"]
+    
+    # APT/Nation State
+    apt1: ["apt1", "comment crew", "pla unit 61398"]
+    lazarus: ["lazarus", "hidden cobra", "guardians of peace"]
+    
+    # Botnets
+    mirai: ["mirai", "satori", "okiru"]
+    conficker: ["conficker", "downadup", "kido"]
+    
+    # Generic categories
+    trojan: ["trojan", "backdoor", "rat"]
+    worm: ["worm", "network worm"]
+    rootkit: ["rootkit", "stealth malware"]
+
+# Attack Type Mappings
+attack_types:
+  # MITRE ATT&CK Framework mappings
+  tactics:
+    reconnaissance: ["recon", "reconnaissance", "scanning", "enumeration"]
+    initial_access: ["phishing", "spearphishing", "watering hole", "exploit"]
+    execution: ["command execution", "scripting", "powershell"]
+    persistence: ["registry", "scheduled task", "service", "autostart"]
+    privilege_escalation: ["uac bypass", "token manipulation", "dll hijacking"]
+    defense_evasion: ["obfuscation", "packing", "anti-analysis", "rootkit"]
+    credential_access: ["credential dumping", "brute force", "keylogging"]
+    discovery: ["system discovery", "network discovery", "process discovery"]
+    lateral_movement: ["remote services", "admin shares", "pass the hash"]
+    collection: ["data collection", "screen capture", "keylogging"]
+    command_and_control: ["c2", "command and control", "botnet", "callback"]
+    exfiltration: ["data exfiltration", "data theft", "data upload"]
+    impact: ["data destruction", "encryption", "denial of service"]
+
+# Threat Actor Mappings
+threat_actors:
+  # Nation-state actors
+  nation_state:
+    china: ["apt1", "apt3", "apt10", "apt40", "pla", "mss"]
+    russia: ["apt28", "apt29", "fancy bear", "cozy bear", "sandworm"]
+    north_korea: ["lazarus", "apt37", "reaper", "hidden cobra"]
+    iran: ["apt33", "apt34", "oilrig", "elfin"]
+    
+  # Cybercriminal groups
+  cybercrime:
+    financial: ["fin7", "carbanak", "cobalt group"]
+    ransomware: ["ryuk group", "maze operators", "conti"]
+    
+  # Hacktivist groups
+  hacktivism:
+    anonymous: ["anonymous", "anon"]
+    other: ["lulzsec", "antisec"]
+
+# Indicator Type Mappings
+indicator_types:
+  # Map various input formats to standardized types
+  network:
+    ip_address: ["ip", "ipv4", "ipv6", "ip_address", "host"]
+    domain: ["domain", "hostname", "fqdn"]
+    url: ["url", "uri", "link"]
+    email: ["email", "email_address"]
+    
+  file:
+    hash: ["hash", "md5", "sha1", "sha256", "sha512"]
+    filename: ["filename", "file", "path"]
+    
+  registry:
+    registry_key: ["registry", "reg_key", "regkey"]
+    
+  user_agent:
+    user_agent: ["user_agent", "ua", "browser"]
+
+# Confidence Level Mappings
+confidence_levels:
+  # Map source confidence values to standardized levels
+  very_high: 
+    ranges: [90, 100]
+    keywords: ["confirmed", "verified", "high confidence"]
+    
+  high:
+    ranges: [70, 89]
+    keywords: ["likely", "probable", "high"]
+    
+  medium:
+    ranges: [40, 69] 
+    keywords: ["possible", "medium", "moderate"]
+    
+  low:
+    ranges: [20, 39]
+    keywords: ["low", "uncertain", "unconfirmed"]
+    
+  very_low:
+    ranges: [0, 19]
+    keywords: ["very low", "minimal", "unlikely"]
+
+# TLP (Traffic Light Protocol) Mappings
+tlp_levels:
+  red: ["tlp:red", "restricted", "internal only"]
+  amber: ["tlp:amber", "limited distribution", "need to know"]
+  green: ["tlp:green", "community", "limited sharing"]
+  white: ["tlp:white", "public", "unrestricted"]
+
+# Source Reliability Mappings
+source_reliability:
+  # Rate sources based on historical accuracy
+  tier_1: ["virustotal", "abuseipdb", "otx"] # High reliability
+  tier_2: ["shodan", "greynoise", "censys"] # Medium reliability  
+  tier_3: ["urlhaus", "malwarebazaar"] # Good for specific use cases
+  
+  # Confidence weights by source
+  weights:
+    virustotal: 1.0
+    abuseipdb: 0.9
+    otx: 0.8
+    shodan: 0.8
+    greynoise: 0.8
+    censys: 0.7
+    urlhaus: 0.7
+    malwarebazaar: 0.7
+    securitytrails: 0.6
+    whoisxml: 0.6
+    zoomeye: 0.6
+    ipinfo: 0.5
