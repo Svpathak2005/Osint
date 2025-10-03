@@ -50,25 +50,16 @@ def normalize_command(args):
     
     try:
         stats = process_raw_files(
-            raw_data_dir=Path(args.input_dir),
-            output_dir=Path(args.output_dir),
-            specific_source=args.source
+            input_dir=Path(args.input_dir),
+            output_dir=Path(args.output_dir)
         )
         
         print(f"\n✅ Normalization completed successfully!")
         print(f"📊 Statistics:")
-        print(f"   • Sources processed: {len(stats.sources_processed)}")
-        print(f"   • Total raw records: {stats.total_raw_records}")
-        print(f"   • Total normalized records: {stats.total_normalized_records}")
-        print(f"   • Processing time: {stats.processing_end_time - stats.processing_start_time}")
+        print(f"   • Total raw records processed: {stats['processed']}")
+        print(f"   • Total normalized records: {stats['normalized']}")
+        print(f"   • Errors encountered: {stats['errors']}")
         
-        if stats.errors:
-            print(f"⚠️  Errors encountered ({len(stats.errors)}):")
-            for error in stats.errors[:5]:  # Show first 5 errors
-                print(f"     • {error}")
-            if len(stats.errors) > 5:
-                print(f"     ... and {len(stats.errors) - 5} more errors")
-    
     except Exception as e:
         print(f"❌ Normalization failed: {e}")
         sys.exit(1)

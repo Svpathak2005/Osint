@@ -24,9 +24,11 @@ A comprehensive Open Source Intelligence (OSINT) platform for collecting, normal
 ### Analysis & Reporting
 - **Threat Intelligence Reports**: Comprehensive analysis with executive summaries
 - **IOC Feeds**: Machine-readable indicators for security tools
+- **Interactive Dashboard**: Web-based visualization and analysis platform
 - **Summary Dashboards**: Key metrics and visualizations
 - **Geographic Analysis**: Location-based threat patterns
 - **Network Analysis**: ASN and organization-based insights
+- **Static Charts**: Publication-ready charts and graphs
 
 ## 🚀 Quick Start
 
@@ -132,6 +134,21 @@ python src/process_data.py report --report-type ioc --min-confidence high
 python src/process_data.py status
 ```
 
+### Visualization Commands
+
+```bash
+# Launch interactive web dashboard
+python launch_dashboard.py
+# or
+make dashboard
+
+# Generate static charts
+make charts
+
+# Full visualization pipeline
+make visualize
+```
+
 ### Data Collection Commands
 
 ```bash
@@ -163,6 +180,7 @@ Osint/
 │   │   ├── normalizer.py     # Data normalization
 │   │   ├── aggregator.py     # Data aggregation
 │   │   └── reporter.py       # Report generation
+│   ├── dashboard.py          # Interactive web dashboard
 │   └── process_data.py       # CLI interface
 ├── data/
 │   ├── raw/                  # Raw API responses

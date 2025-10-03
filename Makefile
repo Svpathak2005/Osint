@@ -24,6 +24,10 @@ help:
 	@echo "  make report    - Generate analysis reports"
 	@echo "  make pipeline  - Run complete pipeline (normalize + aggregate + report)"
 	@echo ""
+	@echo "Visualization Commands:"
+	@echo "  make dashboard - Launch interactive web dashboard"
+	@echo "  make charts    - Generate static charts and graphs"
+	@echo ""
 	@echo "Development Commands:"
 	@echo "  make demo      - Run demonstration with sample data"
 	@echo "  make test      - Run test suite"
@@ -227,6 +231,29 @@ dev-setup:
 
 dev-test:
 	@echo "🔄 Running development tests..."
+	@make test
+	@make lint
+	@echo "✅ Development tests complete"
+
+# Dashboard and visualization commands
+dashboard:
+	@echo "🚀 Launching OSINT Dashboard..."
+	@python launch_dashboard.py
+
+charts:
+	@echo "📊 Generating static visualization charts..."
+	@python -c "from src.processors.reporter import OSINTReporter; r = OSINTReporter(); r.generate_charts()"
+	@echo "✅ Charts generated in reports/charts/"
+
+# Visualization pipeline
+visualize: charts dashboard
+
+# Complete workflow with visualization
+full-demo:
+	@echo "🎬 Running complete OSINT demo with visualization..."
+	@make demo
+	@make charts
+	@echo "✅ Complete demo finished! Run 'make dashboard' to view interactive results"
 	@make lint
 	@make test
 	@make demo

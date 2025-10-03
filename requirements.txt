@@ -6,3 +6,5 @@ networkx==3.2.1
 pandas==2.2.2
 matplotlib==3.9.2
 geoip2==4.8.0
+streamlit==1.28.2
+plotly==5.17.0

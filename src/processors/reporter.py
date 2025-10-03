@@ -502,3 +502,138 @@ class OSINTReporter:
             'top_asns': dict(asns.most_common(5)),
             'top_organizations': dict(orgs.most_common(5))
         }
+    
+    def generate_charts(self) -> bool:
+        """Generate static visualization charts from aggregated data."""
+        try:
+            import matplotlib.pyplot as plt
+            import pandas as pd
+            
+            # Find latest aggregated data
+            aggregated_dir = Path('data/aggregated')
+            if not aggregated_dir.exists():
+                logger.error("No aggregated data directory found")
+                return False
+            
+            aggregated_files = list(aggregated_dir.glob('aggregated_*.jsonl'))
+            if not aggregated_files:
+                logger.error("No aggregated data files found")
+                return False
+            
+            latest_file = max(aggregated_files, key=lambda f: f.stat().st_mtime)
+            
+            # Load indicators
+            indicators = []
+            with open(latest_file, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        try:
+                            data = json.loads(line)
+                            indicator = AggregatedIndicator(**data)
+                            indicators.append(indicator)
+                        except Exception as e:
+                            logger.error(f"Error loading indicator: {e}")
+            
+            if not indicators:
+                logger.error("No indicators loaded")
+                return False
+            
+            # Create charts directory
+            charts_dir = Path('reports/charts')
+            charts_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Generate charts
+            self._create_threat_distribution_chart(indicators, charts_dir)
+            self._create_confidence_chart(indicators, charts_dir)
+            self._create_geographic_chart(indicators, charts_dir)
+            self._create_source_analysis_chart(indicators, charts_dir)
+            
+            logger.info(f"Charts generated in {charts_dir}")
+            return True
+            
+        except ImportError:
+            logger.error("matplotlib and pandas required for chart generation")
+            return False
+        except Exception as e:
+            logger.error(f"Error generating charts: {e}")
+            return False
+    
+    def _create_threat_distribution_chart(self, indicators: List[AggregatedIndicator], output_dir: Path):
+        """Create threat level distribution chart."""
+        import matplotlib.pyplot as plt
+        
+        threat_counts = Counter(i.consensus_threat_level.value for i in indicators)
+        
+        plt.figure(figsize=(10, 6))
+        colors = {
+            'critical': '#dc3545',
+            'malicious': '#fd7e14', 
+            'suspicious': '#ffc107',
+            'unknown': '#6c757d',
+            'benign': '#28a745'
+        }
+        
+        threat_labels = list(threat_counts.keys())
+        threat_values = list(threat_counts.values())
+        chart_colors = [colors.get(label, '#6c757d') for label in threat_labels]
+        
+        plt.pie(threat_values, labels=threat_labels, colors=chart_colors, autopct='%1.1f%%')
+        plt.title('Threat Level Distribution', fontsize=16, fontweight='bold')
+        plt.savefig(output_dir / 'threat_distribution.png', dpi=300, bbox_inches='tight')
+        plt.close()
+    
+    def _create_confidence_chart(self, indicators: List[AggregatedIndicator], output_dir: Path):
+        """Create confidence level chart."""
+        import matplotlib.pyplot as plt
+        
+        confidence_counts = Counter(i.consensus_confidence.value for i in indicators)
+        
+        plt.figure(figsize=(10, 6))
+        plt.bar(confidence_counts.keys(), confidence_counts.values(), color='steelblue')
+        plt.title('Confidence Level Distribution', fontsize=16, fontweight='bold')
+        plt.xlabel('Confidence Level')
+        plt.ylabel('Number of Indicators')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.savefig(output_dir / 'confidence_distribution.png', dpi=300, bbox_inches='tight')
+        plt.close()
+    
+    def _create_geographic_chart(self, indicators: List[AggregatedIndicator], output_dir: Path):
+        """Create geographic distribution chart."""
+        import matplotlib.pyplot as plt
+        
+        countries = []
+        for indicator in indicators:
+            if indicator.most_likely_location and indicator.most_likely_location.country:
+                countries.append(indicator.most_likely_location.country)
+        
+        if not countries:
+            return
+        
+        country_counts = Counter(countries).most_common(15)
+        
+        plt.figure(figsize=(12, 8))
+        countries, counts = zip(*country_counts)
+        plt.barh(range(len(countries)), counts, color='lightcoral')
+        plt.yticks(range(len(countries)), countries)
+        plt.title('Top 15 Countries by Indicator Count', fontsize=16, fontweight='bold')
+        plt.xlabel('Number of Indicators')
+        plt.tight_layout()
+        plt.savefig(output_dir / 'geographic_distribution.png', dpi=300, bbox_inches='tight')
+        plt.close()
+    
+    def _create_source_analysis_chart(self, indicators: List[AggregatedIndicator], output_dir: Path):
+        """Create source coverage analysis chart."""
+        import matplotlib.pyplot as plt
+        
+        source_counts = Counter(i.total_sources for i in indicators)
+        
+        plt.figure(figsize=(10, 6))
+        plt.bar(source_counts.keys(), source_counts.values(), color='mediumseagreen')
+        plt.title('Source Coverage Distribution', fontsize=16, fontweight='bold')
+        plt.xlabel('Number of Sources per Indicator')
+        plt.ylabel('Number of Indicators')
+        plt.tight_layout()
+        plt.savefig(output_dir / 'source_analysis.png', dpi=300, bbox_inches='tight')
+        plt.close()

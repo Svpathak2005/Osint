@@ -20,6 +20,11 @@ function Show-Help {
     Write-Host "  .\run.ps1 report    - Generate analysis reports"
     Write-Host "  .\run.ps1 pipeline  - Run complete pipeline"
     Write-Host ""
+    Write-Host "Visualization Commands:" -ForegroundColor Yellow
+    Write-Host "  .\run.ps1 dashboard - Launch interactive web dashboard"
+    Write-Host "  .\run.ps1 charts    - Generate static charts and graphs"
+    Write-Host "  .\run.ps1 visualize - Generate charts and launch dashboard"
+    Write-Host ""
     Write-Host "Development Commands:" -ForegroundColor Yellow
     Write-Host "  .\run.ps1 demo      - Run demonstration with sample data"
     Write-Host "  .\run.ps1 status    - Show data processing status"
@@ -228,6 +233,34 @@ function Run-Quickstart {
     Write-Host "- Check '.\run.ps1 help' for all available commands"
 }
 
+function Launch-Dashboard {
+    Write-Host "🚀 Launching OSINT Dashboard..." -ForegroundColor Green
+    python launch_dashboard.py
+}
+
+function Generate-Charts {
+    Write-Host "📊 Generating static visualization charts..." -ForegroundColor Yellow
+    python -c "from src.processors.reporter import OSINTReporter; r = OSINTReporter(); r.generate_charts()"
+    Write-Host "✅ Charts generated in reports/charts/" -ForegroundColor Green
+}
+
+function Run-Visualization {
+    Write-Host "📈 Running complete visualization pipeline..." -ForegroundColor Yellow
+    Generate-Charts
+    Write-Host ""
+    Write-Host "Charts generated! Now launching interactive dashboard..." -ForegroundColor Yellow
+    Launch-Dashboard
+}
+
+function Run-FullDemo {
+    Write-Host "🎬 Running complete OSINT demo with visualization..." -ForegroundColor Cyan
+    Run-Demo
+    Write-Host ""
+    Generate-Charts
+    Write-Host ""
+    Write-Host "✅ Complete demo finished! Run '.\run.ps1 dashboard' to view interactive results" -ForegroundColor Green
+}
+
 # Main command dispatcher
 switch ($Command.ToLower()) {
     "help" { Show-Help }
@@ -244,7 +277,11 @@ switch ($Command.ToLower()) {
     "aggregate" { Run-Processing "aggregate" }
     "report" { Run-Processing "report" }
     "pipeline" { Run-Processing "pipeline" }
+    "dashboard" { Launch-Dashboard }
+    "charts" { Generate-Charts }
+    "visualize" { Run-Visualization }
     "demo" { Run-Demo }
+    "full-demo" { Run-FullDemo }
     "status" { Show-Status }
     "validate" { Validate-Requirements }
     "quickstart" { Run-Quickstart }

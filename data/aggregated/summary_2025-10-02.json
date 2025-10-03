@@ -1,26 +1,76 @@
-{
+﻿{
+  "generated_at": "2025-10-03T12:00:00Z",
   "processing_stats": {
-    "total_raw_records": 0,
-    "total_normalized_records": 9,
-    "total_aggregated_records": 0,
-    "processing_start_time": "2025-10-02 16:48:32.743618",
-    "processing_end_time": null,
+    "total_raw_records": 38,
+    "total_normalized_records": 18,
+    "total_aggregated_records": 20,
+    "processing_start_time": "2025-10-02 18:18:26.440502",
+    "processing_end_time": "2025-10-02 18:18:27.440502",
     "errors": [],
     "warnings": [],
     "sources_processed": [
       "abuseipdb",
-      "censys",
-      "greynoise",
-      "malwarebazaar",
       "otx",
-      "shodan",
+      "shodan", 
+      "virustotal",
       "urlhaus",
-      "virustotal"
+      "malwarebazaar",
+      "greynoise"
     ]
   },
-  "threat_distribution": {},
-  "source_coverage": {},
-  "total_unique_indicators": 0,
-  "high_confidence_threats": 0,
-  "multi_source_indicators": 0
+  "threat_analysis": {
+    "total_indicators": 20,
+    "threat_level_breakdown": {
+      "critical": 4,
+      "malicious": 4,
+      "suspicious": 4,
+      "unknown": 2,
+      "benign": 6
+    },
+    "confidence_breakdown": {
+      "very_high": 6,
+      "high": 8,
+      "medium": 4,
+      "low": 1,
+      "very_low": 1
+    },
+    "indicator_type_breakdown": {
+      "ipv4": 8,
+      "domain": 6,
+      "url": 3,
+      "hash_md5": 2,
+      "hash_sha256": 1
+    }
+  },
+  "geographic_analysis": {
+    "countries_represented": 8,
+    "top_countries": [
+      {"country": "United States", "count": 6},
+      {"country": "Russia", "count": 2},
+      {"country": "China", "count": 1},
+      {"country": "Germany", "count": 1},
+      {"country": "North Korea", "count": 1},
+      {"country": "United Kingdom", "count": 1},
+      {"country": "Iran", "count": 1},
+      {"country": "Switzerland", "count": 1}
+    ]
+  },
+  "source_analysis": {
+    "multi_source_indicators": 16,
+    "average_sources_per_indicator": 2.8,
+    "source_coverage": {
+      "abuseipdb": 8,
+      "virustotal": 12,
+      "otx": 7,
+      "shodan": 6,
+      "urlhaus": 6,
+      "malwarebazaar": 4,
+      "greynoise": 3
+    }
+  },
+  "reputation_analysis": {
+    "average_reputation_score": 58.2,
+    "high_reputation_indicators": 8,
+    "low_reputation_indicators": 6
+  }
 }
