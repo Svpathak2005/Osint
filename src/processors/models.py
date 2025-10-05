@@ -165,6 +165,7 @@ class AggregatedIndicator(BaseModel):
     malicious_votes: int = 0
     benign_votes: int = 0
     suspicious_votes: int = 0
+    unknown_votes: int = 0
     
     # Time tracking
     first_seen: Optional[datetime] = None
@@ -172,6 +173,7 @@ class AggregatedIndicator(BaseModel):
     
     # All source data
     normalized_sources: List[NormalizedIndicator] = Field(default_factory=list)
+    all_sources: List[Dict[str, Any]] = Field(default_factory=list)
     
     # Analysis metadata
     analysis_notes: List[str] = Field(default_factory=list)

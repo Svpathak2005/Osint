@@ -194,6 +194,11 @@ class OSINTDashboard:
                 'organization': indicator.primary_network.organization if indicator.primary_network else None,
             }
             
+            # Add source information
+            source_names = [source['name'] for source in indicator.all_sources] if indicator.all_sources else []
+            row['sources'] = ','.join(source_names)  # Store as comma-separated string
+            row['source_list'] = source_names  # Store as list for filtering
+            
             # Add threat intelligence data
             if indicator.aggregated_threats:
                 row['malware_families'] = len(indicator.aggregated_threats.malware_families)
@@ -252,6 +257,20 @@ class OSINTDashboard:
             "Confidence Level",
             confidence_levels,
             index=0
+        )
+        
+        # OSINT Source filter
+        all_sources = set()
+        for source_list in df['source_list']:
+            if source_list:
+                all_sources.update(source_list)
+        
+        source_options = ['All'] + sorted(list(all_sources))
+        selected_source = st.sidebar.selectbox(
+            "🔍 OSINT Source",
+            source_options,
+            index=0,
+            help="Filter indicators by OSINT framework/source"
         )
         
         # Source count filter
@@ -316,6 +335,12 @@ class OSINTDashboard:
         
         if selected_confidence != 'All':
             filtered_df = filtered_df[filtered_df['confidence'] == selected_confidence]
+        
+        # Apply OSINT source filter
+        if selected_source != 'All':
+            filtered_df = filtered_df[filtered_df['source_list'].apply(
+                lambda sources: selected_source in sources if sources else False
+            )]
         
         filtered_df = filtered_df[filtered_df['total_sources'] >= min_sources]
         
